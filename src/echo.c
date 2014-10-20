@@ -1,6 +1,6 @@
 /* $Id: echo.c 227 2010-06-16 17:28:38Z tp $ */
 /*
- * ECHO CSGOlementation.
+ * ECHO implementation.
  *
  * ==========================(LICENSE BEGIN)============================
  *
@@ -18,7 +18,7 @@
  * included in all copies or substantial portions of the Software.
  * 
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR CSGOLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
  * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
  * CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
@@ -45,7 +45,7 @@ extern "C"{
 #endif
 
 /*
- * Some measures tend to show that the 64-bit CSGOlementation offers
+ * Some measures tend to show that the 64-bit implementation offers
  * better performance only on a "64-bit architectures", those which have
  * actual 64-bit registers.
  */
@@ -54,7 +54,7 @@ extern "C"{
 #endif
 
 /*
- * We can use a 64-bit CSGOlementation only if a 64-bit type is available.
+ * We can use a 64-bit implementation only if a 64-bit type is available.
  */
 #if !SPH_64
 #undef SPH_ECHO_64

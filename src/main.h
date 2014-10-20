@@ -26,7 +26,7 @@ class CNode;
 struct CBlockIndexWorkComparator;
 
 /** The maximum allowed size for a serialized block, in bytes (network rule) */
-static const unsigned int MAX_BLOCK_SIZE = 10000000;
+static const unsigned int MAX_BLOCK_SIZE = 1000000;
 /** The maximum size for mined blocks */
 static const unsigned int MAX_BLOCK_SIZE_GEN = MAX_BLOCK_SIZE/2;
 /** The maximum size for transactions we're willing to relay/mine */
@@ -44,7 +44,7 @@ static const unsigned int UNDOFILE_CHUNK_SIZE = 0x100000; // 1 MiB
 /** Fake height value used in CCoins to signify they are only in the memory pool (since 0.8) */
 static const unsigned int MEMPOOL_HEIGHT = 0x7FFFFFFF;
 /** No amount larger than this (in satoshi) is valid */
-static const int64 MAX_MONEY = 1280000 * COIN;
+static const int64 MAX_MONEY = 1024000000 * COIN;
 inline bool MoneyRange(int64 nValue) { return (nValue >= 0 && nValue <= MAX_MONEY); }
 /** Coinbase transaction outputs can only be spent after this number of new blocks (network rule) */
 static const int COINBASE_MATURITY = 100;
@@ -86,7 +86,7 @@ extern int64 nHPSTimerStart;
 extern int64 nTimeBestReceived;
 extern CCriticalSection cs_setpwalletRegistered;
 extern std::set<CWallet*> setpwalletRegistered;
-extern bool fCSGOorting;
+extern bool fImporting;
 extern bool fReindex;
 extern bool fBenchmark;
 extern int nScriptCheckThreads;
@@ -138,7 +138,7 @@ bool CheckDiskSpace(uint64 nAdditionalBytes = 0);
 FILE* OpenBlockFile(const CDiskBlockPos &pos, bool fReadOnly = false);
 /** Open an undo file (rev?????.dat) */
 FILE* OpenUndoFile(const CDiskBlockPos &pos, bool fReadOnly = false);
-/** CSGOort blocks from an external file */
+/** Import blocks from an external file */
 bool LoadExternalBlockFile(FILE* fileIn, CDiskBlockPos *dbp = NULL);
 /** Initialize a new block tree database + block data on disk */
 bool InitBlockIndex();
@@ -209,7 +209,7 @@ struct CDiskBlockPos
     int nFile;
     unsigned int nPos;
 
-    CSGOLEMENT_SERIALIZE(
+    IMPLEMENT_SERIALIZE(
         READWRITE(VARINT(nFile));
         READWRITE(VARINT(nPos));
     )
@@ -239,7 +239,7 @@ struct CDiskTxPos : public CDiskBlockPos
 {
     unsigned int nTxOffset; // after header
 
-    CSGOLEMENT_SERIALIZE(
+    IMPLEMENT_SERIALIZE(
         READWRITE(*(CDiskBlockPos*)this);
         READWRITE(VARINT(nTxOffset));
     )
@@ -338,7 +338,7 @@ class CBlockUndo
 public:
     std::vector<CTxUndo> vtxundo; // for all but the coinbase
 
-    CSGOLEMENT_SERIALIZE(
+    IMPLEMENT_SERIALIZE(
         READWRITE(vtxundo);
     )
 
@@ -461,7 +461,7 @@ public:
     }
 
 
-    CSGOLEMENT_SERIALIZE
+    IMPLEMENT_SERIALIZE
     (
         nSerSize += SerReadWrite(s, *(CTransaction*)this, nType, nVersion, ser_action);
         nVersion = this->nVersion;
@@ -549,8 +549,8 @@ protected:
 
 public:
 
-    // serialization CSGOlementation
-    CSGOLEMENT_SERIALIZE(
+    // serialization implementation
+    IMPLEMENT_SERIALIZE(
         READWRITE(nTransactions);
         READWRITE(vHash);
         std::vector<unsigned char> vBytes;
@@ -621,7 +621,7 @@ public:
     uint64 nTimeFirst;         // earliest time of block in file
     uint64 nTimeLast;          // latest time of block in file
 
-    CSGOLEMENT_SERIALIZE(
+    IMPLEMENT_SERIALIZE(
         READWRITE(VARINT(nBlocks));
         READWRITE(VARINT(nSize));
         READWRITE(VARINT(nUndoSize));
@@ -964,7 +964,7 @@ public:
         hashPrev = (pprev ? pprev->GetBlockHash() : 0);
     }
 
-    CSGOLEMENT_SERIALIZE
+    IMPLEMENT_SERIALIZE
     (
         if (!(nType & SER_GETHASH))
             READWRITE(VARINT(nVersion));
@@ -1093,7 +1093,7 @@ public:
         vHave = vHaveIn;
     }
 
-    CSGOLEMENT_SERIALIZE
+    IMPLEMENT_SERIALIZE
     (
         if (!(nType & SER_GETHASH))
             READWRITE(nVersion);
@@ -1324,7 +1324,7 @@ public:
     // thus the filter will likely be modified.
     CMerkleBlock(const CBlock& block, CBloomFilter& filter);
 
-    CSGOLEMENT_SERIALIZE
+    IMPLEMENT_SERIALIZE
     (
         READWRITE(header);
         READWRITE(txn);

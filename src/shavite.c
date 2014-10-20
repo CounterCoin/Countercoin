@@ -1,6 +1,6 @@
 /* $Id: shavite.c 227 2010-06-16 17:28:38Z tp $ */
 /*
- * SHAvite-3 CSGOlementation.
+ * SHAvite-3 implementation.
  *
  * ==========================(LICENSE BEGIN)============================
  *
@@ -18,7 +18,7 @@
  * included in all copies or substantial portions of the Software.
  * 
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR CSGOLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
  * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
  * CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
@@ -51,10 +51,10 @@ extern "C"{
 
 /*
  * As of round 2 of the SHA-3 competition, the published reference
- * CSGOlementation and test vectors are wrong, because they use
+ * implementation and test vectors are wrong, because they use
  * big-endian AES tables while the internal decoding uses little-endian.
  * The code below follows the specification. To turn it into a code
- * which follows the reference CSGOlementation (the one called "BugFix"
+ * which follows the reference implementation (the one called "BugFix"
  * on the SHAvite-3 web site, published on Nov 23rd, 2009), comment out
  * the code below (from the '#define AES_BIG_ENDIAN...' to the definition
  * of the AES_ROUND_NOKEY macro) and replace it with the version which
@@ -97,7 +97,7 @@ static const sph_u32 IV512[] = {
 	} while (0)
 
 /*
- * This is the code needed to match the "reference CSGOlementation" as
+ * This is the code needed to match the "reference implementation" as
  * published on Nov 23rd, 2009, instead of the published specification.
  * 
 

@@ -61,7 +61,7 @@ public:
     // Should only be used for deserialization
     CBloomFilter() {}
 
-    CSGOLEMENT_SERIALIZE
+    IMPLEMENT_SERIALIZE
     (
         READWRITE(vData);
         READWRITE(nHashFuncs);

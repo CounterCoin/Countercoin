@@ -83,7 +83,7 @@ public:
 
     COutPoint() { SetNull(); }
     COutPoint(uint256 hashIn, unsigned int nIn) { hash = hashIn; n = nIn; }
-    CSGOLEMENT_SERIALIZE( READWRITE(FLATDATA(*this)); )
+    IMPLEMENT_SERIALIZE( READWRITE(FLATDATA(*this)); )
     void SetNull() { hash = 0; n = (unsigned int) -1; }
     bool IsNull() const { return (hash == 0 && n == (unsigned int) -1); }
 
@@ -138,7 +138,7 @@ public:
     explicit CTxIn(COutPoint prevoutIn, CScript scriptSigIn=CScript(), unsigned int nSequenceIn=std::numeric_limits<unsigned int>::max());
     CTxIn(uint256 hashPrevTx, unsigned int nOut, CScript scriptSigIn=CScript(), unsigned int nSequenceIn=std::numeric_limits<unsigned int>::max());
 
-    CSGOLEMENT_SERIALIZE
+    IMPLEMENT_SERIALIZE
     (
         READWRITE(prevout);
         READWRITE(scriptSig);
@@ -185,7 +185,7 @@ public:
 
     CTxOut(int64 nValueIn, CScript scriptPubKeyIn);
 
-    CSGOLEMENT_SERIALIZE
+    IMPLEMENT_SERIALIZE
     (
         READWRITE(nValue);
         READWRITE(scriptPubKey);
@@ -252,7 +252,7 @@ public:
         SetNull();
     }
 
-    CSGOLEMENT_SERIALIZE
+    IMPLEMENT_SERIALIZE
     (
         READWRITE(this->nVersion);
         nVersion = this->nVersion;
@@ -312,7 +312,7 @@ public:
 
     CTxOutCompressor(CTxOut &txoutIn) : txout(txoutIn) { }
 
-    CSGOLEMENT_SERIALIZE(({
+    IMPLEMENT_SERIALIZE(({
         if (!fRead) {
             uint64 nVal = CompressAmount(txout.nValue);
             READWRITE(VARINT(nVal));
@@ -376,7 +376,7 @@ public:
     // undo information for all txins
     std::vector<CTxInUndo> vprevout;
 
-    CSGOLEMENT_SERIALIZE(
+    IMPLEMENT_SERIALIZE(
         READWRITE(vprevout);
     )
 };
@@ -621,7 +621,7 @@ public:
 
     int GetAlgo() const { return ::GetAlgo(nVersion); }
     
-    CSGOLEMENT_SERIALIZE
+    IMPLEMENT_SERIALIZE
     (
         READWRITE(this->nVersion);
         nVersion = this->nVersion;
@@ -701,7 +701,7 @@ public:
         *((CBlockHeader*)this) = header;
     }
     
-    CSGOLEMENT_SERIALIZE
+    IMPLEMENT_SERIALIZE
     (
         READWRITE(*(CBlockHeader*)this);
         READWRITE(vtx);

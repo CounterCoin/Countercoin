@@ -1,8 +1,8 @@
 /* $Id: sph_blake.h 252 2011-06-07 17:55:14Z tp $ */
 /**
  * BLAKE interface. BLAKE is a family of functions which differ by their
- * output size; this CSGOlementation defines BLAKE for output sizes 224,
- * 256, 384 and 512 bits. This CSGOlementation conforms to the "third
+ * output size; this implementation defines BLAKE for output sizes 224,
+ * 256, 384 and 512 bits. This implementation conforms to the "third
  * round" specification.
  *
  * ==========================(LICENSE BEGIN)============================
@@ -21,7 +21,7 @@
  * included in all copies or substantial portions of the Software.
  * 
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR CSGOLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
  * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
  * CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
@@ -75,7 +75,7 @@ extern "C"{
  * context can be reused for another computation.
  *
  * The contents of this structure are private. A running BLAKE
- * computation can be cloned by copying the context (e.g. with a sCSGOle
+ * computation can be cloned by copying the context (e.g. with a simple
  * <code>memcpy()</code>).
  */
 typedef struct {
@@ -109,7 +109,7 @@ typedef sph_blake_small_context sph_blake256_context;
  * context can be reused for another computation.
  *
  * The contents of this structure are private. A running BLAKE
- * computation can be cloned by copying the context (e.g. with a sCSGOle
+ * computation can be cloned by copying the context (e.g. with a simple
  * <code>memcpy()</code>).
  */
 typedef struct {

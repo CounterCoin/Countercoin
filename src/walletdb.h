@@ -42,7 +42,7 @@ public:
         nCreateTime = nCreateTime_;
     }
 
-    CSGOLEMENT_SERIALIZE
+    IMPLEMENT_SERIALIZE
     (
         READWRITE(this->nVersion);
         nVersion = this->nVersion;

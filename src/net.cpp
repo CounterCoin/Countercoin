@@ -344,7 +344,7 @@ bool GetMyExternalIP(CNetAddr& ipRet)
     for (int nHost = 1; nHost <= 2; nHost++)
     {
         // We should be phasing out our use of sites like these. If we need
-        // replacements, we should ask for volunteers to put this sCSGOle
+        // replacements, we should ask for volunteers to put this simple
         // php file on their web server that prints the client IP:
         //  <?php echo $_SERVER["REMOTE_ADDR"]; ?>
         if (nHost == 1)
@@ -377,7 +377,7 @@ bool GetMyExternalIP(CNetAddr& ipRet)
                     addrConnect = addrIP;
             }
 
-            pszGet = "GET /sCSGOle/ HTTP/1.1\r\n"
+            pszGet = "GET /simple/ HTTP/1.1\r\n"
                      "Host: www.showmyip.com\r\n"
                      "User-Agent: Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)\r\n"
                      "Connection: close\r\n"
@@ -530,7 +530,7 @@ void CNode::Cleanup()
 
 void CNode::PushVersion()
 {
-    /// when NTP CSGOlemented, change to just nTime = GetAdjustedTime()
+    /// when NTP implemented, change to just nTime = GetAdjustedTime()
     int64 nTime = (fInbound ? GetAdjustedTime() : GetTime());
     CAddress addrYou = (addr.IsRoutable() && !IsProxy(addr) ? addr : CAddress(CService("0.0.0.0",0)));
     CAddress addrMe = GetLocalAddress(&addr);
@@ -839,7 +839,7 @@ void ThreadSocketHandler()
                 hSocketMax = max(hSocketMax, pnode->hSocket);
                 have_fds = true;
 
-                // CSGOlement the following logic:
+                // Implement the following logic:
                 // * If there is data to send, select() for sending data. As this only
                 //   happens when optimistic write failed, we choose to first drain the
                 //   write buffer in this case before receiving more. This avoids
@@ -1102,7 +1102,7 @@ void ThreadMapPort()
             }
         }
 
-        string strDesc = "Countercoin " + FormatFullVersion();
+        string strDesc = "CounterCoin " + FormatFullVersion();
 
         try {
             loop {
@@ -1447,7 +1447,7 @@ bool OpenNetworkConnection(const CAddress& addrConnect, CSemaphoreGrant *grantOu
 }
 
 
-// for now, use a very sCSGOle selection metric: the node from which we received
+// for now, use a very simple selection metric: the node from which we received
 // most recently
 double static NodeSyncScore(const CNode *pnode) {
     return -pnode->nLastRecv;
@@ -1617,7 +1617,7 @@ bool BindListenPort(const CService &addrBind, string& strError)
     {
         int nErr = WSAGetLastError();
         if (nErr == WSAEADDRINUSE)
-            strError = strprintf(_("Unable to bind to %s on this computer. Countercoin is probably already running."), addrBind.ToString().c_str());
+            strError = strprintf(_("Unable to bind to %s on this computer. CounterCoin is probably already running."), addrBind.ToString().c_str());
         else
             strError = strprintf(_("Unable to bind to %s on this computer (bind returned error %d, %s)"), addrBind.ToString().c_str(), nErr, strerror(nErr));
         printf("%s\n", strError.c_str());

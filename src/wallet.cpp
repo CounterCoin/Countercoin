@@ -182,12 +182,12 @@ void CWallet::SetBestChain(const CBlockLocator& loc)
     walletdb.WriteBestBlock(loc);
 }
 
-// This class CSGOlements an addrIncoming entry that causes pre-0.4
+// This class implements an addrIncoming entry that causes pre-0.4
 // clients to crash on startup if reading a private-key-encrypted wallet.
 class CCorruptAddress
 {
 public:
-    CSGOLEMENT_SERIALIZE
+    IMPLEMENT_SERIALIZE
     (
         if (nType & SER_DISK)
             READWRITE(nVersion);
@@ -595,10 +595,10 @@ bool CWallet::IsChange(const CTxOut& txout) const
 
     // TODO: fix handling of 'change' outputs. The assumption is that any
     // payment to a TX_PUBKEYHASH that is mine but isn't in the address book
-    // is change. That assumption is likely to break when we CSGOlement multisignature
+    // is change. That assumption is likely to break when we implement multisignature
     // wallets that return change back into a multi-signature-protected address;
     // a better way of identifying which outputs are 'the send' and which are
-    // 'the change' will need to be CSGOlemented (maybe extend CWalletTx to remember
+    // 'the change' will need to be implemented (maybe extend CWalletTx to remember
     // which output, if any, was change).
     if (ExtractDestination(txout.scriptPubKey, address) && ::IsMine(*this, address))
     {
@@ -1034,9 +1034,9 @@ static void ApproximateBestSubset(vector<pair<int64, pair<const CWalletTx*,unsig
             {
                 //The solver here uses a randomized algorithm,
                 //the randomness serves no real security purpose but is just
-                //needed to prevent degenerate behavior and it is CSGOortant
+                //needed to prevent degenerate behavior and it is important
                 //that the rng fast. We do not use a constant random sequence,
-                //because there may be some privacy CSGOrovement by making
+                //because there may be some privacy improvement by making
                 //the selection random.
                 if (nPass == 0 ? insecure_rand()&1 : !vfIncluded[i])
                 {

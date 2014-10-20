@@ -65,11 +65,11 @@ std::string DecodeDumpString(const std::string &str) {
     return ret.str();
 }
 
-Value CSGOortprivkey(const Array& params, bool fHelp)
+Value importprivkey(const Array& params, bool fHelp)
 {
     if (fHelp || params.size() < 1 || params.size() > 3)
         throw runtime_error(
-            "CSGOortprivkey <Countercoinprivkey> [label] [rescan=true]\n"
+            "importprivkey <CounterCoinprivkey> [label] [rescan=true]\n"
             "Adds a private key (as returned by dumpprivkey) to your wallet.");
 
     EnsureWalletIsUnlocked();
@@ -79,7 +79,7 @@ Value CSGOortprivkey(const Array& params, bool fHelp)
     if (params.size() > 1)
         strLabel = params[1].get_str();
 
-    // Whether to perform rescan after CSGOort
+    // Whether to perform rescan after import
     bool fRescan = true;
     if (params.size() > 2)
         fRescan = params[2].get_bool();
@@ -115,12 +115,12 @@ Value CSGOortprivkey(const Array& params, bool fHelp)
     return Value::null;
 }
 
-Value CSGOortwallet(const Array& params, bool fHelp)
+Value importwallet(const Array& params, bool fHelp)
 {
     if (fHelp || params.size() != 1)
         throw runtime_error(
-            "CSGOortwallet <filename>\n"
-            "CSGOorts keys from a wallet dump file (see dumpwallet).");
+            "importwallet <filename>\n"
+            "Imports keys from a wallet dump file (see dumpwallet).");
 
     EnsureWalletIsUnlocked();
 
@@ -150,7 +150,7 @@ Value CSGOortwallet(const Array& params, bool fHelp)
         CPubKey pubkey = key.GetPubKey();
         CKeyID keyid = pubkey.GetID();
         if (pwalletMain->HaveKey(keyid)) {
-            printf("Skipping CSGOort of %s (key already present)\n", CBitcoinAddress(keyid).ToString().c_str());
+            printf("Skipping import of %s (key already present)\n", CBitcoinAddress(keyid).ToString().c_str());
             continue;
         }
         int64 nTime = DecodeDumpTime(vstr[1]);
@@ -168,7 +168,7 @@ Value CSGOortwallet(const Array& params, bool fHelp)
                 fLabel = true;
             }
         }
-        printf("CSGOorting %s...\n", CBitcoinAddress(keyid).ToString().c_str());
+        printf("Importing %s...\n", CBitcoinAddress(keyid).ToString().c_str());
         if (!pwalletMain->AddKeyPubKey(key, pubkey)) {
             fGood = false;
             continue;
@@ -199,15 +199,15 @@ Value dumpprivkey(const Array& params, bool fHelp)
 {
     if (fHelp || params.size() != 1)
         throw runtime_error(
-            "dumpprivkey <Countercoinaddress>\n"
-            "Reveals the private key corresponding to <Countercoinaddress>.");
+            "dumpprivkey <CounterCoinaddress>\n"
+            "Reveals the private key corresponding to <CounterCoinaddress>.");
 
     EnsureWalletIsUnlocked();
 
     string strAddress = params[0].get_str();
     CBitcoinAddress address;
     if (!address.SetString(strAddress))
-        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Countercoin address");
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid CounterCoin address");
     CKeyID keyID;
     if (!address.GetKeyID(keyID))
         throw JSONRPCError(RPC_TYPE_ERROR, "Address does not refer to a key");
@@ -246,7 +246,7 @@ Value dumpwallet(const Array& params, bool fHelp)
     std::sort(vKeyBirth.begin(), vKeyBirth.end());
 
     // produce output
-    file << strprintf("# Wallet dump created by Countercoin %s (%s)\n", CLIENT_BUILD.c_str(), CLIENT_DATE.c_str());
+    file << strprintf("# Wallet dump created by CounterCoin %s (%s)\n", CLIENT_BUILD.c_str(), CLIENT_DATE.c_str());
     file << strprintf("# * Created on %s\n", EncodeDumpTime(GetTime()).c_str());
     file << strprintf("# * Best block at time of backup was %i (%s),\n", nBestHeight, hashBestChain.ToString().c_str());
     file << strprintf("#   mined on %s\n", EncodeDumpTime(pindexBest->nTime).c_str());

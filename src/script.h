@@ -615,7 +615,7 @@ private:
     CScript &script;
 protected:
     // These check for scripts for which a special case with a shorter encoding is defined.
-    // They are CSGOlemented separately from the CScript test, as these test for exact byte
+    // They are implemented separately from the CScript test, as these test for exact byte
     // sequence correspondences, and are more strict. For example, IsToPubKey also verifies
     // whether the public key is valid (as invalid ones cannot be represented in compressed
     // form).

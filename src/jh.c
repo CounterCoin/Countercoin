@@ -1,6 +1,6 @@
 /* $Id: jh.c 255 2011-06-07 19:50:20Z tp $ */
 /*
- * JH CSGOlementation.
+ * JH implementation.
  *
  * ==========================(LICENSE BEGIN)============================
  *
@@ -18,7 +18,7 @@
  * included in all copies or substantial portions of the Software.
  * 
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR CSGOLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
  * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
  * CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
@@ -867,7 +867,7 @@ static const sph_u32 IV512[] = {
 
 /*
  * We are not aiming at a small footprint, but we are still using a
- * 32-bit CSGOlementation. Full loop unrolling would smash the L1
+ * 32-bit implementation. Full loop unrolling would smash the L1
  * cache on some "big" architectures (32 kB L1 cache).
  */
 

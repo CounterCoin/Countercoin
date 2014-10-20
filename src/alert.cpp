@@ -238,7 +238,7 @@ bool CAlert::ProcessAlert(bool fThread)
                 // be safe we first strip anything not in safeChars, then add single quotes around
                 // the whole string before passing it to the shell:
                 std::string singleQuote("'");
-                // safeChars chosen to allow sCSGOle messages/URLs/email addresses, but avoid anything
+                // safeChars chosen to allow simple messages/URLs/email addresses, but avoid anything
                 // even possibly remotely dangerous like & or >
                 std::string safeChars("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890 .,;_/:?@");
                 std::string safeStatus;

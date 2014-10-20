@@ -1,7 +1,7 @@
 /* $Id: sph_jh.h 216 2010-06-08 09:46:57Z tp $ */
 /**
  * JH interface. JH is a family of functions which differ by
- * their output size; this CSGOlementation defines JH for output
+ * their output size; this implementation defines JH for output
  * sizes 224, 256, 384 and 512 bits.
  *
  * ==========================(LICENSE BEGIN)============================
@@ -20,7 +20,7 @@
  * included in all copies or substantial portions of the Software.
  * 
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR CSGOLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
  * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
  * CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
@@ -70,7 +70,7 @@ extern "C"{
  * another computation.
  *
  * The contents of this structure are private. A running JH computation
- * can be cloned by copying the context (e.g. with a sCSGOle
+ * can be cloned by copying the context (e.g. with a simple
  * <code>memcpy()</code>).
  */
 typedef struct {

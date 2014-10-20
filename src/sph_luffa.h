@@ -1,7 +1,7 @@
 /* $Id: sph_luffa.h 154 2010-04-26 17:00:24Z tp $ */
 /**
  * Luffa interface. Luffa is a family of functions which differ by
- * their output size; this CSGOlementation defines Luffa for output
+ * their output size; this implementation defines Luffa for output
  * sizes 224, 256, 384 and 512 bits.
  *
  * ==========================(LICENSE BEGIN)============================
@@ -20,7 +20,7 @@
  * included in all copies or substantial portions of the Software.
  * 
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR CSGOLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
  * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
  * CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
@@ -70,7 +70,7 @@ extern "C"{
  * reused for another computation.
  *
  * The contents of this structure are private. A running Luffa
- * computation can be cloned by copying the context (e.g. with a sCSGOle
+ * computation can be cloned by copying the context (e.g. with a simple
  * <code>memcpy()</code>).
  */
 typedef struct {

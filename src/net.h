@@ -626,7 +626,7 @@ public:
     // badly and disconnect/ban them, but do it in a
     // one-coding-mistake-won't-shatter-the-entire-network
     // way.
-    // CSGOORTANT:  There should be nothing I can give a
+    // IMPORTANT:  There should be nothing I can give a
     // node that it will forward on that will make that
     // node's peers drop it. If there is, an attacker
     // can isolate a node and/or try to split the network.

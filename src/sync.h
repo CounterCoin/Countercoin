@@ -14,7 +14,7 @@
 
 ////////////////////////////////////////////////
 //                                            //
-// THE SCSGOLE DEFINITON, EXCLUDING DEBUG CODE //
+// THE SIMPLE DEFINITON, EXCLUDING DEBUG CODE //
 //                                            //
 ////////////////////////////////////////////////
 
@@ -49,7 +49,7 @@ LEAVE_CRITICAL_SECTION(mutex); // no RAII
 
 ///////////////////////////////
 //                           //
-// THE ACTUAL CSGOLEMENTATION //
+// THE ACTUAL IMPLEMENTATION //
 //                           //
 ///////////////////////////////
 

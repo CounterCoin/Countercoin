@@ -9,7 +9,7 @@
 #include "key.h"
 
 
-// anonymous namespace with local CSGOlementation code (OpenSSL interaction)
+// anonymous namespace with local implementation code (OpenSSL interaction)
 namespace {
 
 // Generate a private key from just the secret parameter

@@ -1,6 +1,6 @@
 /* $Id: keccak.c 259 2011-07-19 22:11:27Z tp $ */
 /*
- * Keccak CSGOlementation.
+ * Keccak implementation.
  *
  * ==========================(LICENSE BEGIN)============================
  *
@@ -18,7 +18,7 @@
  * included in all copies or substantial portions of the Software.
  * 
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR CSGOLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
  * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
  * CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
@@ -48,32 +48,32 @@ extern "C"{
  *  SPH_KECCAK_NOCOPY      do not copy the state into local variables
  * 
  * If there is no usable 64-bit type, the code automatically switches
- * back to the 32-bit CSGOlementation.
+ * back to the 32-bit implementation.
  *
  * Some tests on an Intel Core2 Q6600 (both 64-bit and 32-bit, 32 kB L1
  * code cache), a PowerPC (G3, 32 kB L1 code cache), an ARM920T core
  * (16 kB L1 code cache), and a small MIPS-compatible CPU (Broadcom BCM3302,
  * 8 kB L1 code cache), seem to show that the following are optimal:
  *
- * -- x86, 64-bit: use the 64-bit CSGOlementation, unroll 8 rounds,
+ * -- x86, 64-bit: use the 64-bit implementation, unroll 8 rounds,
  * do not copy the state; unrolling 2, 6 or all rounds also provides
  * near-optimal performance.
- * -- x86, 32-bit: use the 32-bit CSGOlementation, unroll 6 rounds,
+ * -- x86, 32-bit: use the 32-bit implementation, unroll 6 rounds,
  * interleave, do not copy the state. Unrolling 1, 2, 4 or 8 rounds
  * also provides near-optimal performance.
- * -- PowerPC: use the 64-bit CSGOlementation, unroll 8 rounds,
+ * -- PowerPC: use the 64-bit implementation, unroll 8 rounds,
  * copy the state. Unrolling 4 or 6 rounds is near-optimal.
- * -- ARM: use the 64-bit CSGOlementation, unroll 2 or 4 rounds,
+ * -- ARM: use the 64-bit implementation, unroll 2 or 4 rounds,
  * copy the state.
- * -- MIPS: use the 64-bit CSGOlementation, unroll 2 rounds, copy
+ * -- MIPS: use the 64-bit implementation, unroll 2 rounds, copy
  * the state. Unrolling only 1 round is also near-optimal.
  *
- * Also, interleaving does not always yield actual CSGOrovements when
- * using a 32-bit CSGOlementation; in particular when the architecture
+ * Also, interleaving does not always yield actual improvements when
+ * using a 32-bit implementation; in particular when the architecture
  * does not offer a native rotation opcode (interleaving replaces one
  * 64-bit rotation with two 32-bit rotations, which is a gain only if
  * there is a native 32-bit rotation opcode and not a native 64-bit
- * rotation opcode; also, interleaving CSGOlies a small overhead when
+ * rotation opcode; also, interleaving implies a small overhead when
  * processing input words).
  *
  * To sum up:
@@ -89,7 +89,7 @@ extern "C"{
 #endif
 
 /*
- * By default, we select the 64-bit CSGOlementation if a 64-bit type
+ * By default, we select the 64-bit implementation if a 64-bit type
  * is available, unless a 32-bit x86 is detected.
  */
 #if !defined SPH_KECCAK_64 && SPH_64 \
@@ -98,7 +98,7 @@ extern "C"{
 #endif
 
 /*
- * If using a 32-bit CSGOlementation, we prefer to interleave.
+ * If using a 32-bit implementation, we prefer to interleave.
  */
 #if !SPH_KECCAK_64 && !defined SPH_KECCAK_INTERLEAVE
 #define SPH_KECCAK_INTERLEAVE   1
@@ -1051,7 +1051,7 @@ static const struct {
  * On output, the following words are complemented:
  *    a04 a10 a20 a22 a23 a31
  *
- * The (CSGOlicit) permutation and the theta expansion will bring back
+ * The (implicit) permutation and the theta expansion will bring back
  * the input mask for the next round.
  */
 
@@ -1518,7 +1518,7 @@ static const struct {
 
 #else
 
-#error UnCSGOlemented unroll count for Keccak.
+#error Unimplemented unroll count for Keccak.
 
 #endif
 

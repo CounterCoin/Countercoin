@@ -4,7 +4,7 @@
  * functions, called Skein-256, Skein-512 and Skein-1024, which can be
  * further parameterized with an output length. For the SHA-3
  * competition, Skein-512 is used for output sizes of 224, 256, 384 and
- * 512 bits; this is what this code CSGOlements. Thus, we hereafter call
+ * 512 bits; this is what this code implements. Thus, we hereafter call
  * Skein-224, Skein-256, Skein-384 and Skein-512 what the Skein
  * specification defines as Skein-512-224, Skein-512-256, Skein-512-384
  * and Skein-512-512, respectively.
@@ -25,7 +25,7 @@
  * included in all copies or substantial portions of the Software.
  * 
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR CSGOLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
  * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
  * CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
@@ -77,7 +77,7 @@ extern "C"{
  * performed, the context can be reused for another computation.
  *
  * The contents of this structure are private. A running Skein computation
- * can be cloned by copying the context (e.g. with a sCSGOle
+ * can be cloned by copying the context (e.g. with a simple
  * <code>memcpy()</code>).
  */
 typedef struct {

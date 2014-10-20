@@ -166,8 +166,8 @@ std::string HelpMessage()
 {
     string strUsage = _("Options:") + "\n";
     strUsage += "  -?                     " + _("This help message") + "\n";
-    strUsage += "  -conf=<file>           " + _("Specify configuration file (default: Countercoin.conf)") + "\n";
-    strUsage += "  -pid=<file>            " + _("Specify pid file (default: Countercoind.pid)") + "\n";
+    strUsage += "  -conf=<file>           " + _("Specify configuration file (default: CounterCoin.conf)") + "\n";
+    strUsage += "  -pid=<file>            " + _("Specify pid file (default: CounterCoind.pid)") + "\n";
     strUsage += "  -gen                   " + _("Generate coins (default: 0)") + "\n";
     strUsage += "  -datadir=<dir>         " + _("Specify data directory") + "\n";
     strUsage += "  -wallet=<file>         " + _("Specify wallet file (within data directory)") + "\n";
@@ -208,7 +208,7 @@ std::string HelpMessage()
         strUsage += "  -daemon                " + _("Run in the background as a daemon and accept commands") + "\n";
 #endif
     strUsage += "  -testnet               " + _("Use the test network") + "\n";
-    strUsage += "  -debug                 " + _("Output extra debugging information. CSGOlies all other -debug* options") + "\n";
+    strUsage += "  -debug                 " + _("Output extra debugging information. Implies all other -debug* options") + "\n";
     strUsage += "  -debugnet              " + _("Output extra network debugging information") + "\n";
     strUsage += "  -logtimestamps         " + _("Prepend debug output with timestamp") + "\n";
     strUsage += "  -shrinkdebugfile       " + _("Shrink debug.log file on client startup (default: 1 when no -debug)") + "\n";
@@ -235,7 +235,7 @@ std::string HelpMessage()
     strUsage += "  -checkblocks=<n>       " + _("How many blocks to check at startup (default: 288, 0 = all)") + "\n";
     strUsage += "  -checklevel=<n>        " + _("How thorough the block verification is (0-4, default: 3)") + "\n";
     strUsage += "  -txindex               " + _("Maintain a full transaction index (default: 0)") + "\n";
-    strUsage += "  -loadblock=<file>      " + _("CSGOorts blocks from external blk000??.dat file") + "\n";
+    strUsage += "  -loadblock=<file>      " + _("Imports blocks from external blk000??.dat file") + "\n";
     strUsage += "  -reindex               " + _("Rebuild block chain index from current blk000??.dat files") + "\n";
     strUsage += "  -par=<n>               " + _("Set the number of script verification threads (up to 16, 0 = auto, <0 = leave that many cores free, default: 0)") + "\n";
     strUsage += "  -algo=<algo>           " + _("Mining algorithm: sha256d, scrypt, groestl, skein, qubit") + "\n";
@@ -253,26 +253,26 @@ std::string HelpMessage()
     return strUsage;
 }
 
-struct CCSGOortingNow
+struct CImportingNow
 {
-    CCSGOortingNow() {
-        assert(fCSGOorting == false);
-        fCSGOorting = true;
+    CImportingNow() {
+        assert(fImporting == false);
+        fImporting = true;
     }
 
-    ~CCSGOortingNow() {
-        assert(fCSGOorting == true);
-        fCSGOorting = false;
+    ~CImportingNow() {
+        assert(fImporting == true);
+        fImporting = false;
     }
 };
 
-void ThreadCSGOort(std::vector<boost::filesystem::path> vCSGOortFiles)
+void ThreadImport(std::vector<boost::filesystem::path> vImportFiles)
 {
     RenameThread("bitcoin-loadblk");
 
     // -reindex
     if (fReindex) {
-        CCSGOortingNow CSGO;
+        CImportingNow CSGO;
         int nFile = 0;
         while (true) {
             CDiskBlockPos pos(nFile, 0);
@@ -295,20 +295,20 @@ void ThreadCSGOort(std::vector<boost::filesystem::path> vCSGOortFiles)
     if (filesystem::exists(pathBootstrap)) {
         FILE *file = fopen(pathBootstrap.string().c_str(), "rb");
         if (file) {
-            CCSGOortingNow CSGO;
+            CImportingNow CSGO;
             filesystem::path pathBootstrapOld = GetDataDir() / "bootstrap.dat.old";
-            printf("CSGOorting bootstrap.dat...\n");
+            printf("Importing bootstrap.dat...\n");
             LoadExternalBlockFile(file);
             RenameOver(pathBootstrap, pathBootstrapOld);
         }
     }
 
     // -loadblock=
-    BOOST_FOREACH(boost::filesystem::path &path, vCSGOortFiles) {
+    BOOST_FOREACH(boost::filesystem::path &path, vImportFiles) {
         FILE *file = fopen(path.string().c_str(), "rb");
         if (file) {
-            CCSGOortingNow CSGO;
-            printf("CSGOorting %s...\n", path.string().c_str());
+            CImportingNow CSGO;
+            printf("Importing %s...\n", path.string().c_str());
             LoadExternalBlockFile(file);
         }
     }
@@ -449,7 +449,7 @@ bool AppInit2(boost::thread_group& threadGroup)
     else if (nScriptCheckThreads > MAX_SCRIPTCHECK_THREADS)
         nScriptCheckThreads = MAX_SCRIPTCHECK_THREADS;
 
-    // -debug CSGOlies fDebug*
+    // -debug implies fDebug*
     if (fDebug)
         fDebugNet = true;
     else
@@ -527,12 +527,12 @@ bool AppInit2(boost::thread_group& threadGroup)
     if (file) fclose(file);
     static boost::interprocess::file_lock lock(pathLockFile.string().c_str());
     if (!lock.try_lock())
-        return InitError(strprintf(_("Cannot obtain a lock on data directory %s. Countercoin is probably already running."), strDataDir.c_str()));
+        return InitError(strprintf(_("Cannot obtain a lock on data directory %s. CounterCoin is probably already running."), strDataDir.c_str()));
 
     if (GetBoolArg("-shrinkdebugfile", !fDebug))
         ShrinkDebugFile();
     printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-    printf("Countercoin version %s (%s)\n", FormatFullVersion().c_str(), CLIENT_DATE.c_str());
+    printf("CounterCoin version %s (%s)\n", FormatFullVersion().c_str(), CLIENT_DATE.c_str());
     printf("Using OpenSSL version %s\n", SSLeay_version(SSLEAY_VERSION));
     if (!fLogTimestamps)
         printf("Startup time: %s\n", DateTimeStrFormat("%Y-%m-%d %H:%M:%S", GetTime()).c_str());
@@ -542,7 +542,7 @@ bool AppInit2(boost::thread_group& threadGroup)
     std::ostringstream strErrors;
 
     if (fDaemon)
-        fprintf(stdout, "Countercoin server starting\n");
+        fprintf(stdout, "CounterCoin server starting\n");
 
     if (nScriptCheckThreads) {
         printf("Using %u threads for script verification\n", nScriptCheckThreads);
@@ -876,10 +876,10 @@ bool AppInit2(boost::thread_group& threadGroup)
             InitWarning(msg);
         }
         else if (nLoadWalletRet == DB_TOO_NEW)
-            strErrors << _("Error loading wallet.dat: Wallet requires newer version of Countercoin") << "\n";
+            strErrors << _("Error loading wallet.dat: Wallet requires newer version of CounterCoin") << "\n";
         else if (nLoadWalletRet == DB_NEED_REWRITE)
         {
-            strErrors << _("Wallet needed to be rewritten: restart Countercoin to complete") << "\n";
+            strErrors << _("Wallet needed to be rewritten: restart CounterCoin to complete") << "\n";
             printf("%s", strErrors.str().c_str());
             return InitError(strErrors.str());
         }
@@ -946,20 +946,20 @@ bool AppInit2(boost::thread_group& threadGroup)
         nWalletDBUpdated++;
     }
 
-    // ********************************************************* Step 9: CSGOort blocks
+    // ********************************************************* Step 9: import blocks
 
     // scan for better chains in the block chain database, that are not yet connected in the active best chain
     CValidationState state;
     if (!ConnectBestBlock(state))
         strErrors << "Failed to connect best block";
 
-    std::vector<boost::filesystem::path> vCSGOortFiles;
+    std::vector<boost::filesystem::path> vImportFiles;
     if (mapArgs.count("-loadblock"))
     {
         BOOST_FOREACH(string strFile, mapMultiArgs["-loadblock"])
-            vCSGOortFiles.push_back(strFile);
+            vImportFiles.push_back(strFile);
     }
-    threadGroup.create_thread(boost::bind(&ThreadCSGOort, vCSGOortFiles));
+    threadGroup.create_thread(boost::bind(&ThreadImport, vImportFiles));
 
     // ********************************************************* Step 10: load peers
 

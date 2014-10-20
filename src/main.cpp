@@ -2,7 +2,7 @@
 // Copyright (c) 2009-2013 The Bitcoin developers
 // Copyright (c) 2013-2014 The Zetacoin developers
 // Copyright (c) 2014 The Huntercoin developers
-// Copyright (c) 2014 The Countercoin developers
+// Copyright (c) 2014 The CounterCoin developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -46,7 +46,7 @@ CBlockIndex* pindexBest = NULL;
 set<CBlockIndex*, CBlockIndexWorkComparator> setBlockIndexValid; // may contain all CBlockIndex*'s that have validness >=BLOCK_VALID_TRANSACTIONS, and must contain those who aren't failed
 int64 nTimeBestReceived = 0;
 int nScriptCheckThreads = 0;
-bool fCSGOorting = false;
+bool fImporting = false;
 bool fReindex = false;
 bool fBenchmark = false;
 bool fTxIndex = false;
@@ -69,7 +69,7 @@ map<uint256, map<uint256, CDataStream*> > mapOrphanTransactionsByPrev;
 // Constant stuff for coinbase transactions we create:
 CScript COINBASE_FLAGS;
 
-const string strMessageMagic = "Countercoin Signed Message:\n";
+const string strMessageMagic = "CounterCoin Signed Message:\n";
 
 double dHashesPerSec = 0.0;
 int64 nHPSTimerStart = 0;
@@ -196,7 +196,7 @@ void UnregisterNodeSignals(CNodeSignals& nodeSignals)
 
 //////////////////////////////////////////////////////////////////////////////
 //
-// CBlockLocator CSGOlementation
+// CBlockLocator implementation
 //
 
 CBlockLocator::CBlockLocator(uint256 hashBlock)
@@ -286,7 +286,7 @@ int CBlockLocator::GetHeight()
 
 //////////////////////////////////////////////////////////////////////////////
 //
-// CCoinsView CSGOlementations
+// CCoinsView implementations
 //
 
 bool CCoinsView::GetCoins(const uint256 &txid, CCoins &coins) { return false; }
@@ -529,7 +529,7 @@ bool IsStandardTx(const CTransaction& tx, string& reason)
 
 bool IsFinalTx(const CTransaction &tx, int nBlockHeight, int64 nBlockTime)
 {
-    // Time based nLockTime CSGOlemented in 0.1.6
+    // Time based nLockTime implemented in 0.1.6
     if (tx.nLockTime == 0)
         return true;
     if (nBlockHeight == 0)
@@ -1269,8 +1269,8 @@ const CBlockIndex* GetLastBlockIndexForAlgo(const CBlockIndex* pindex, int algo)
     }
 }
 
-static const int64 nStartSubsidy = 16 * COIN;
-static const int64 nMinSubsidy = 1 * COIN;
+static const int64 nStartSubsidy = 1024 * COIN;
+static const int64 nMinSubsidy = 16 * COIN;
 
 int64 static GetBlockValue(int nHeight, int64 nFees)
 {
@@ -1290,15 +1290,15 @@ int64 static GetBlockValue(int nHeight, int64 nFees)
     return nSubsidy + nFees;
 }
 
-static const int64 nTargetTimespan = 300; // 5 minutes
-static const int64 nTargetSpacing = 150; // 2.5 minutes
+static const int64 nTargetTimespan = 60; // 1 minute
+static const int64 nTargetSpacing = 30; // 30 seconds
 static const int64 nInterval = nTargetTimespan / nTargetSpacing; // 2 blocks
 
 static const int64 nAveragingInterval = nInterval * 20; // 40 blocks
-static const int64 nAveragingTargetTimespan = nAveragingInterval * nTargetSpacing;
+static const int64 nAveragingTargetTimespan = nAveragingInterval * nTargetSpacing; // 40 minutes
 
-static const int64 nMaxAdjustDown = 10; // 10% adjustment down
-static const int64 nMaxAdjustUp = 10; // as well as a 10% adjustment up
+static const int64 nMaxAdjustDown = 20; // 20% adjustment down
+static const int64 nMaxAdjustUp = 10; // 10% adjustment up
 
 static const int64 nTargetTimespanAdjDown = nTargetTimespan * (100 + nMaxAdjustDown) / 100;
 
@@ -1425,7 +1425,7 @@ int GetNumBlocksOfPeers()
 
 bool IsInitialBlockDownload()
 {
-    if (pindexBest == NULL || fCSGOorting || fReindex || nBestHeight < Checkpoints::GetTotalBlocksEstimate())
+    if (pindexBest == NULL || fImporting || fReindex || nBestHeight < Checkpoints::GetTotalBlocksEstimate())
         return true;
     static int64 nLastUpdate;
     static CBlockIndex* pindexLastBest;
@@ -3537,7 +3537,7 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv)
                 printf("  got inventory: %s  %s\n", inv.ToString().c_str(), fAlreadyHave ? "have" : "new");
 
             if (!fAlreadyHave) {
-                if (!fCSGOorting && !fReindex)
+                if (!fImporting && !fReindex)
                     pfrom->AskFor(inv);
             } else if (inv.type == MSG_BLOCK && mapOrphanBlocks.count(inv.hash)) {
                 PushGetBlocks(pfrom, pindexBest, GetOrphanRoot(mapOrphanBlocks[inv.hash]));
@@ -3729,7 +3729,7 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv)
     }
 
 
-    else if (strCommand == "block" && !fCSGOorting && !fReindex) // Ignore blocks received while CSGOorting
+    else if (strCommand == "block" && !fImporting && !fReindex) // Ignore blocks received while importing
     {
         CBlock block;
         vRecv >> block;
@@ -3822,7 +3822,7 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv)
                 // duplicate/expired/invalid-signature/whatever alerts
                 // eventually get banned.
                 // This isn't a Misbehaving(100) (immediate ban) because the
-                // peer might be an older or different CSGOlementation with
+                // peer might be an older or different implementation with
                 // a different signature key, etc.
                 pfrom->Misbehaving(10);
             }
@@ -4030,15 +4030,15 @@ bool SendMessages(CNode* pto, bool fSendTrickle)
         }
 
         // Start block sync
-        if (pto->fStartSync && !fCSGOorting && !fReindex) {
+        if (pto->fStartSync && !fImporting && !fReindex) {
             pto->fStartSync = false;
             PushGetBlocks(pto, pindexBest, uint256(0));
         }
 
         // Resend wallet transactions that haven't gotten in a block yet
-        // Except during reindex, CSGOorting and IBD, when old wallet
+        // Except during reindex, importing and IBD, when old wallet
         // transactions become unconfirmed and spams other nodes.
-        if (!fReindex && !fCSGOorting && !IsInitialBlockDownload())
+        if (!fReindex && !fImporting && !IsInitialBlockDownload())
         {
             ResendWalletTransactions();
         }
@@ -4668,7 +4668,7 @@ bool CheckWork(CBlock* pblock, CWallet& wallet, CReserveKey& reservekey)
     uint256 hashBlock = pblock->GetHash();
 
     //// debug print
-    printf("CountercoinMiner:\n");
+    printf("CounterCoinMiner:\n");
     printf("proof-of-work found\n  block-hash: %s\n  pow-hash: %s\n  target: %s\n", 
         hashBlock.GetHex().c_str(), 
         hashPoW.GetHex().c_str(), 
@@ -4680,7 +4680,7 @@ bool CheckWork(CBlock* pblock, CWallet& wallet, CReserveKey& reservekey)
     {
         LOCK(cs_main);
         if (pblock->hashPrevBlock != hashBestChain)
-            return error("CountercoinMiner : generated block is stale");
+            return error("CounterCoinMiner : generated block is stale");
 
         // Remove key from key pool
         reservekey.KeepKey();
@@ -4694,7 +4694,7 @@ bool CheckWork(CBlock* pblock, CWallet& wallet, CReserveKey& reservekey)
         // Process this block the same as if we had received it from another node
         CValidationState state;
         if (!ProcessBlock(state, NULL, pblock))
-            return error("CountercoinMiner : ProcessBlock, block not accepted");
+            return error("CounterCoinMiner : ProcessBlock, block not accepted");
     }
 
     return true;
@@ -5082,7 +5082,7 @@ void static GenericMiner(CWallet *pwallet, int algo)
 
 void static ThreadBitcoinMiner(CWallet *pwallet)
 {
-    printf("Countercoin miner started\n");
+    printf("CounterCoin miner started\n");
     SetThreadPriority(THREAD_PRIORITY_LOWEST);
     RenameThread("bitcoin-miner");
     
@@ -5109,7 +5109,7 @@ void static ThreadBitcoinMiner(CWallet *pwallet)
     }
     catch (boost::thread_interrupted)
     {
-        printf("Countercoin miner terminated\n");
+        printf("CounterCoin miner terminated\n");
         throw;
     }
 }

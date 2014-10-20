@@ -23,23 +23,23 @@ class CMainParams : public CChainParams {
 public:
     CMainParams() {
         // The message start string is designed to be unlikely to occur in normal data.
-        pchMessageStart[0] = 0x6A;
-        pchMessageStart[1] = 0x5B;
-        pchMessageStart[2] = 0x29;
-        pchMessageStart[3] = 0x7C;
-        nDefaultPort = 2075;
-        nRPCPort = 2076;
+        pchMessageStart[0] = 0x0A;
+        pchMessageStart[1] = 0x05;
+        pchMessageStart[2] = 0x03;
+        pchMessageStart[3] = 0x0C;
+        nDefaultPort = 10240;
+        nRPCPort = 10241;
         bnProofOfWorkLimit[ALGO_SHA256D] = CBigNum(~uint256(0) >> 20);
         bnProofOfWorkLimit[ALGO_SCRYPT]  = CBigNum(~uint256(0) >> 20);
         bnProofOfWorkLimit[ALGO_GROESTL] = CBigNum(~uint256(0) >> 20);
         bnProofOfWorkLimit[ALGO_SKEIN]   = CBigNum(~uint256(0) >> 20);
         bnProofOfWorkLimit[ALGO_QUBIT]   = CBigNum(~uint256(0) >> 20);
-        nSubsidyHalvingInterval = 25600;
+        nSubsidyHalvingInterval = 102400;
 
         // Build the genesis block. Note that the output of the genesis coinbase cannot
         // be spent as it did not originally exist in the database.
   
-		const char* pszTimestamp = "08-17-2014 Ninjas in Pyjamas wins ESL One Cologne 2014";
+		const char* pszTimestamp = "CounterCoin's Reign Has Started!";
         CTransaction txNew;
         txNew.vin.resize(1);
         txNew.vout.resize(1);
@@ -50,27 +50,28 @@ public:
         genesis.hashPrevBlock = 0;
         genesis.hashMerkleRoot = genesis.BuildMerkleTree();
         genesis.nVersion = 1;
-        genesis.nTime    = 1408287000;
-        genesis.nBits    = 0;
-        genesis.nNonce   = 0;
+        genesis.nTime    = 1393638000;
+        genesis.nBits    = 0x1e0fffff;
+        genesis.nNonce   = 1384805;
         
         //// debug print
         hashGenesisBlock = genesis.GetHash();
-        while (hashGenesisBlock > bnProofOfWorkLimit.getuint256()){
-            if (++genesis.nNonce==0) break;
-            hashGenesisBlock = genesis.GetHash();
-        }
+        //while (hashGenesisBlock > bnProofOfWorkLimit.getuint256()){
+        //    if (++genesis.nNonce==0) break;
+        //    hashGenesisBlock = genesis.GetHash();
+        //}
 
-        printf("%s\n", hashGenesisBlock.ToString().c_str());
-        printf("%s\n", genesis.hashMerkleRoot.ToString().c_str());
-        printf("%x\n", bnProofOfWorkLimit.GetCompact());
-        genesis.print();
+        //printf("%s\n", hashGenesisBlock.ToString().c_str());
+        //printf("%s\n", genesis.hashMerkleRoot.ToString().c_str());
+        //printf("%x\n", bnProofOfWorkLimit.GetCompact());
+        //genesis.print();
         
         
-        assert(hashGenesisBlock == uint256("0x"));
-        assert(genesis.hashMerkleRoot == uint256("0x"));
+        assert(hashGenesisBlock == uint256("0x000009c013aa50b5221bf64821edbc366ac181bc0a4076a901ad43f38bf51914"));
+        assert(genesis.hashMerkleRoot == uint256("0xc8367e33470ed36c98a4354f085c882b7bd5d90386ab63fe4250a0c72330cfd0"));
 
         vSeeds.push_back(CDNSSeedData("68.232.180.111", "68.232.180.111"));
+        vSeeds.push_back(CDNSSeedData("54.94.148.228", "54.94.148.228"));
 
         base58Prefixes[PUBKEY_ADDRESS] = 1;
         base58Prefixes[SCRIPT_ADDRESS] = 30;
@@ -216,7 +217,7 @@ void SelectParams(CChainParams::Network network) {
             pCurrentParams = &regTestParams;
             break;
         default:
-            assert(false && "UnCSGOlemented network");
+            assert(false && "Unimplemented network");
             return;
     }
 }

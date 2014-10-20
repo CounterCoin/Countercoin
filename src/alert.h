@@ -39,7 +39,7 @@ public:
     std::string strStatusBar;
     std::string strReserved;
 
-    CSGOLEMENT_SERIALIZE
+    IMPLEMENT_SERIALIZE
     (
         READWRITE(this->nVersion);
         nVersion = this->nVersion;
@@ -76,7 +76,7 @@ public:
         SetNull();
     }
 
-    CSGOLEMENT_SERIALIZE
+    IMPLEMENT_SERIALIZE
     (
         READWRITE(vchMsg);
         READWRITE(vchSig);

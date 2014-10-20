@@ -80,7 +80,7 @@ LIBS+= \
     # a "Stack smashing detected" error instead of being exploited.
     HARDENING+=-fstack-protector-all -Wstack-protector
 
-    # Make some CSGOortant things such as the global offset table read only as soon as
+    # Make some important things such as the global offset table read only as soon as
     # the dynamic linker is finished building it. This will prevent overwriting of addresses
     # which would later be jumped to.
     LDHARDENING+=-Wl,-z,relro -Wl,-z,now
@@ -159,10 +159,10 @@ OBJS= \
     obj/cubehash.o \
     obj/shavite.o
 
-all: Countercoind
+all: CounterCoind
 
-test check: test_Countercoin FORCE
-	./test_Countercoin
+test check: test_CounterCoin FORCE
+	./test_CounterCoin
 
 #
 # LevelDB support
@@ -197,7 +197,7 @@ obj/%.o: %.c
 	      -e '/^$$/ d' -e 's/$$/ :/' < $(@:%.o=%.d) >> $(@:%.o=%.P); \
 	  rm -f $(@:%.o=%.d)
       
-Countercoind: $(OBJS:obj/%=obj/%)
+CounterCoind: $(OBJS:obj/%=obj/%)
 	$(LINK) $(xCXXFLAGS) -o $@ $^ $(xLDFLAGS) $(LIBS)
 
 TESTOBJS := $(patsubst test/%.cpp,obj-test/%.o,$(wildcard test/*.cpp))
@@ -209,11 +209,11 @@ obj-test/%.o: test/%.cpp
 	      -e '/^$$/ d' -e 's/$$/ :/' < $(@:%.o=%.d) >> $(@:%.o=%.P); \
 	  rm -f $(@:%.o=%.d)
 
-test_Countercoin: $(TESTOBJS) $(filter-out obj/init.o obj/Countercoind.o,$(OBJS:obj/%=obj/%))
+test_CounterCoin: $(TESTOBJS) $(filter-out obj/init.o obj/CounterCoind.o,$(OBJS:obj/%=obj/%))
 	$(LINK) $(xCXXFLAGS) -o $@ $(LIBPATHS) $^ $(TESTLIBS) $(xLDFLAGS) $(LIBS)
 
 clean:
-	-rm -f Countercoind test_Countercoin
+	-rm -f CounterCoind test_CounterCoin
 	-rm -f obj/*.o
 	-rm -f obj-test/*.o
 	-rm -f obj/*.P

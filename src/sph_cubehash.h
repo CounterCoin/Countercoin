@@ -1,7 +1,7 @@
 /* $Id: sph_cubehash.h 180 2010-05-08 02:29:25Z tp $ */
 /**
  * CubeHash interface. CubeHash is a family of functions which differ by
- * their output size; this CSGOlementation defines CubeHash for output
+ * their output size; this implementation defines CubeHash for output
  * sizes 224, 256, 384 and 512 bits, with the "standard parameters"
  * (CubeHash16/32 with the CubeHash specification notations).
  *
@@ -21,7 +21,7 @@
  * included in all copies or substantial portions of the Software.
  * 
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR CSGOLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
  * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
  * CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
@@ -71,7 +71,7 @@ extern "C"{
  * another computation.
  *
  * The contents of this structure are private. A running CubeHash computation
- * can be cloned by copying the context (e.g. with a sCSGOle
+ * can be cloned by copying the context (e.g. with a simple
  * <code>memcpy()</code>).
  */
 typedef struct {

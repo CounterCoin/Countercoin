@@ -176,10 +176,10 @@ Value stop(const Array& params, bool fHelp)
     if (fHelp || params.size() > 1)
         throw runtime_error(
             "stop\n"
-            "Stop Countercoin server.");
+            "Stop CounterCoin server.");
     // Shutdown will take long enough that the response should get back
     StartShutdown();
-    return "Countercoin server stopping";
+    return "CounterCoin server stopping";
 }
 
 Value makekeypair(const Array& params, bool fHelp)
@@ -276,8 +276,8 @@ static const CRPCCommand vRPCCommands[] =
     { "listsinceblock",         &listsinceblock,         false,     false },
     { "dumpprivkey",            &dumpprivkey,            true,      false },
     { "dumpwallet",             &dumpwallet,             true,      false },
-    { "CSGOortprivkey",          &CSGOortprivkey,          false,     false },
-    { "CSGOortwallet",           &CSGOortwallet,           false,     false },
+    { "importprivkey",          &importprivkey,          false,     false },
+    { "importwallet",           &importwallet,           false,     false },
     { "listunspent",            &listunspent,            false,     false },
     { "getrawtransaction",      &getrawtransaction,      false,     false },
     { "createrawtransaction",   &createrawtransaction,   false,     false },
@@ -316,14 +316,14 @@ const CRPCCommand *CRPCTable::operator[](string name) const
 // HTTP protocol
 //
 // This ain't Apache.  We're just using HTTP header for the length field
-// and to be compatible with other JSON-RPC CSGOlementations.
+// and to be compatible with other JSON-RPC implementations.
 //
 
 string HTTPPost(const string& strMsg, const map<string,string>& mapRequestHeaders)
 {
     ostringstream s;
     s << "POST / HTTP/1.1\r\n"
-      << "User-Agent: Countercoin-json-rpc/" << FormatFullVersion() << "\r\n"
+      << "User-Agent: CounterCoin-json-rpc/" << FormatFullVersion() << "\r\n"
       << "Host: 127.0.0.1\r\n"
       << "Content-Type: application/json\r\n"
       << "Content-Length: " << strMsg.size() << "\r\n"
@@ -354,7 +354,7 @@ static string HTTPReply(int nStatus, const string& strMsg, bool keepalive)
     if (nStatus == HTTP_UNAUTHORIZED)
         return strprintf("HTTP/1.0 401 Authorization Required\r\n"
             "Date: %s\r\n"
-            "Server: Countercoin-json-rpc/%s\r\n"
+            "Server: CounterCoin-json-rpc/%s\r\n"
             "WWW-Authenticate: Basic realm=\"jsonrpc\"\r\n"
             "Content-Type: text/html\r\n"
             "Content-Length: 296\r\n"
@@ -381,7 +381,7 @@ static string HTTPReply(int nStatus, const string& strMsg, bool keepalive)
             "Connection: %s\r\n"
             "Content-Length: %"PRIszu"\r\n"
             "Content-Type: application/json\r\n"
-            "Server: Countercoin-json-rpc/%s\r\n"
+            "Server: CounterCoin-json-rpc/%s\r\n"
             "\r\n"
             "%s",
         nStatus,
@@ -512,7 +512,7 @@ bool HTTPAuthorized(map<string, string>& mapHeaders)
 }
 
 //
-// JSON-RPC protocol.  Countercoin speaks version 1.0 for maximum compatibility,
+// JSON-RPC protocol.  CounterCoin speaks version 1.0 for maximum compatibility,
 // but uses JSON-RPC 1.1/2.0 standards for parts of the 1.0 standard that were
 // unspecified (HTTP errors and contents of 'error').
 //
@@ -646,10 +646,10 @@ public:
 };
 
 template <typename Protocol>
-class AcceptedConnectionCSGOl : public AcceptedConnection
+class AcceptedConnectionImpl : public AcceptedConnection
 {
 public:
-    AcceptedConnectionCSGOl(
+    AcceptedConnectionImpl(
             asio::io_service& io_service,
             ssl::context &context,
             bool fUseSSL) :
@@ -701,7 +701,7 @@ static void RPCListen(boost::shared_ptr< basic_socket_acceptor<Protocol, SocketA
                    const bool fUseSSL)
 {
     // Accept connection
-    AcceptedConnectionCSGOl<Protocol>* conn = new AcceptedConnectionCSGOl<Protocol>(acceptor->get_io_service(), context, fUseSSL);
+    AcceptedConnectionImpl<Protocol>* conn = new AcceptedConnectionImpl<Protocol>(acceptor->get_io_service(), context, fUseSSL);
 
     acceptor->async_accept(
             conn->sslStream.lowest_layer(),
@@ -728,7 +728,7 @@ static void RPCAcceptHandler(boost::shared_ptr< basic_socket_acceptor<Protocol, 
     if (error != asio::error::operation_aborted && acceptor->is_open())
         RPCListen(acceptor, context, fUseSSL);
 
-    AcceptedConnectionCSGOl<ip::tcp>* tcp_conn = dynamic_cast< AcceptedConnectionCSGOl<ip::tcp>* >(conn);
+    AcceptedConnectionImpl<ip::tcp>* tcp_conn = dynamic_cast< AcceptedConnectionImpl<ip::tcp>* >(conn);
 
     // TODO: Actually handle errors
     if (error)
@@ -736,7 +736,7 @@ static void RPCAcceptHandler(boost::shared_ptr< basic_socket_acceptor<Protocol, 
         delete conn;
     }
 
-    // Restrict callers by IP.  It is CSGOortant to
+    // Restrict callers by IP.  It is important to
     // do this before starting client thread, to filter out
     // certain DoS and misbehaving clients.
     else if (tcp_conn && !ClientAllowed(tcp_conn->peer.address()))
@@ -761,7 +761,7 @@ void StartRPCThreads()
     {
         unsigned char rand_pwd[32];
         RAND_bytes(rand_pwd, 32);
-        string strWhatAmI = "To use Countercoind";
+        string strWhatAmI = "To use CounterCoind";
         if (mapArgs.count("-server"))
             strWhatAmI = strprintf(_("To use the %s option"), "\"-server\"");
         else if (mapArgs.count("-daemon"))
@@ -770,13 +770,13 @@ void StartRPCThreads()
             _("%s, you must set a rpcpassword in the configuration file:\n"
               "%s\n"
               "It is recommended you use the following random password:\n"
-              "rpcuser=Countercoinrpc\n"
+              "rpcuser=CounterCoinrpc\n"
               "rpcpassword=%s\n"
               "(you do not need to remember this password)\n"
               "The username and password MUST NOT be the same.\n"
               "If the file does not exist, create it with owner-readable-only file permissions.\n"
               "It is also recommended to set alertnotify so you are notified of problems;\n"
-              "for example: alertnotify=echo %%s | mail -s \"Countercoin Alert\" admin@foo.com\n"),
+              "for example: alertnotify=echo %%s | mail -s \"CounterCoin Alert\" admin@foo.com\n"),
                 strWhatAmI.c_str(),
                 GetConfigFile().string().c_str(),
                 EncodeBase58(&rand_pwd[0],&rand_pwd[0]+32).c_str()),
@@ -806,7 +806,7 @@ void StartRPCThreads()
         else printf("ThreadRPCServer ERROR: missing server private key file %s\n", pathPKFile.string().c_str());
 
         string strCiphers = GetArg("-rpcsslciphers", "TLSv1+HIGH:!SSLv2:!aNULL:!eNULL:!AH:!3DES:@STRENGTH");
-        SSL_CTX_set_cipher_list(rpc_ssl_context->CSGOl(), strCiphers.c_str());
+        SSL_CTX_set_cipher_list(rpc_ssl_context->impl(), strCiphers.c_str());
     }
 
     // Try a dual IPv6/IPv4 socket, falling back to separate IPv4 and IPv6 sockets
@@ -1229,7 +1229,7 @@ Array RPCConvertValues(const std::string &strMethod, const std::vector<std::stri
     if (strMethod == "gettxout"               && n > 2) ConvertTo<bool>(params[2]);
     if (strMethod == "lockunspent"            && n > 0) ConvertTo<bool>(params[0]);
     if (strMethod == "lockunspent"            && n > 1) ConvertTo<Array>(params[1]);
-    if (strMethod == "CSGOortprivkey"          && n > 2) ConvertTo<bool>(params[2]);
+    if (strMethod == "importprivkey"          && n > 2) ConvertTo<bool>(params[2]);
     if (strMethod == "verifychain"            && n > 0) ConvertTo<boost::int64_t>(params[0]);
     if (strMethod == "verifychain"            && n > 1) ConvertTo<boost::int64_t>(params[1]);
 

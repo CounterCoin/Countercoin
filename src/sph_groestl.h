@@ -1,6 +1,6 @@
 /* $Id: sph_groestl.h 216 2010-06-08 09:46:57Z tp $ */
 /**
- * Groestl interface. This code CSGOlements Groestl with the recommended
+ * Groestl interface. This code implements Groestl with the recommended
  * parameters for SHA-3, with outputs of 224, 256, 384 and 512 bits.
  *
  * ==========================(LICENSE BEGIN)============================
@@ -19,7 +19,7 @@
  * included in all copies or substantial portions of the Software.
  * 
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR CSGOLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
  * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
  * CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
@@ -69,7 +69,7 @@ extern "C"{
  * context can be reused for another computation.
  *
  * The contents of this structure are private. A running Groestl
- * computation can be cloned by copying the context (e.g. with a sCSGOle
+ * computation can be cloned by copying the context (e.g. with a simple
  * <code>memcpy()</code>).
  */
 typedef struct {
@@ -109,7 +109,7 @@ typedef sph_groestl_small_context sph_groestl256_context;
  * context can be reused for another computation.
  *
  * The contents of this structure are private. A running Groestl
- * computation can be cloned by copying the context (e.g. with a sCSGOle
+ * computation can be cloned by copying the context (e.g. with a simple
  * <code>memcpy()</code>).
  */
 typedef struct {

@@ -118,10 +118,10 @@ OBJS= \
     obj/shavite.o
 
 
-all: Countercoind.exe
+all: CounterCoind.exe
 
-test check: test_Countercoin.exe FORCE
-	test_Countercoin.exe
+test check: test_CounterCoin.exe FORCE
+	test_CounterCoin.exe
 
 #
 # LevelDB support
@@ -138,7 +138,7 @@ obj/%.o: %.cpp $(HEADERS)
 obj/%.o: %.c $(HEADERS)
 	$(CXX) -c $(CFLAGS) -fpermissive -o $@ $<
 
-Countercoind.exe: $(OBJS:obj/%=obj/%)
+CounterCoind.exe: $(OBJS:obj/%=obj/%)
 	$(CXX) $(CFLAGS) $(LDFLAGS) -o $@ $(LIBPATHS) $^ $(LIBS)
 
 TESTOBJS := $(patsubst test/%.cpp,obj-test/%.o,$(wildcard test/*.cpp))
@@ -146,11 +146,11 @@ TESTOBJS := $(patsubst test/%.cpp,obj-test/%.o,$(wildcard test/*.cpp))
 obj-test/%.o: test/%.cpp $(HEADERS)
 	$(CXX) -c $(TESTDEFS) $(CFLAGS) -o $@ $<
 
-test_Countercoin.exe: $(TESTOBJS) $(filter-out obj/init.o obj/Countercoind.o,$(OBJS:obj/%=obj/%))
+test_CounterCoin.exe: $(TESTOBJS) $(filter-out obj/init.o obj/CounterCoind.o,$(OBJS:obj/%=obj/%))
 	$(CXX) $(CFLAGS) $(LDFLAGS) -o $@ $(LIBPATHS) $^ -lboost_unit_test_framework$(BOOST_SUFFIX) $(LIBS)
 
 clean:
-	rm -f Countercoind.exe test_Countercoin.exe
+	rm -f CounterCoind.exe test_CounterCoin.exe
 	rm -f obj/*
 	rm -f obj-test/*
 	cd leveldb && $(MAKE) TARGET_OS=NATIVE_WINDOWS clean && cd ..

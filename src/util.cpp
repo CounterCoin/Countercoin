@@ -727,7 +727,7 @@ vector<unsigned char> DecodeBase64(const char* p, bool* pfInvalid)
             case 0: // 4n base64 characters processed: ok
                 break;
 
-            case 1: // 4n+1 base64 character processed: CSGOossible
+            case 1: // 4n+1 base64 character processed: impossible
                 *pfInvalid = true;
                 break;
 
@@ -902,7 +902,7 @@ vector<unsigned char> DecodeBase32(const char* p, bool* pfInvalid)
             case 0: // 8n base32 characters processed: ok
                 break;
 
-            case 1: // 8n+1 base32 characters processed: CSGOossible
+            case 1: // 8n+1 base32 characters processed: impossible
             case 3: //   +3
             case 6: //   +6
                 *pfInvalid = true;
@@ -981,7 +981,7 @@ static std::string FormatException(std::exception* pex, const char* pszThread)
     char pszModule[MAX_PATH] = "";
     GetModuleFileNameA(NULL, pszModule, sizeof(pszModule));
 #else
-    const char* pszModule = "Countercoin";
+    const char* pszModule = "CounterCoin";
 #endif
     if (pex)
         return strprintf(
@@ -1017,13 +1017,13 @@ void PrintExceptionContinue(std::exception* pex, const char* pszThread)
 boost::filesystem::path GetDefaultDataDir()
 {
     namespace fs = boost::filesystem;
-    // Windows < Vista: C:\Documents and Settings\Username\Application Data\Countercoin
-    // Windows >= Vista: C:\Users\Username\AppData\Roaming\Countercoin
-    // Mac: ~/Library/Application Support/Countercoin
-    // Unix: ~/.Countercoin
+    // Windows < Vista: C:\Documents and Settings\Username\Application Data\CounterCoin
+    // Windows >= Vista: C:\Users\Username\AppData\Roaming\CounterCoin
+    // Mac: ~/Library/Application Support/CounterCoin
+    // Unix: ~/.CounterCoin
 #ifdef WIN32
     // Windows
-    return GetSpecialFolderPath(CSIDL_APPDATA) / "Countercoin";
+    return GetSpecialFolderPath(CSIDL_APPDATA) / "CounterCoin";
 #else
     fs::path pathRet;
     char* pszHome = getenv("HOME");
@@ -1035,10 +1035,10 @@ boost::filesystem::path GetDefaultDataDir()
     // Mac
     pathRet /= "Library/Application Support";
     fs::create_directory(pathRet);
-    return pathRet / "Countercoin";
+    return pathRet / "CounterCoin";
 #else
     // Unix
-    return pathRet / ".Countercoin";
+    return pathRet / ".CounterCoin";
 #endif
 #endif
 }
@@ -1079,7 +1079,7 @@ const boost::filesystem::path &GetDataDir(bool fNetSpecific)
 
 boost::filesystem::path GetConfigFile()
 {
-    boost::filesystem::path pathConfigFile(GetArg("-conf", "Countercoin.conf"));
+    boost::filesystem::path pathConfigFile(GetArg("-conf", "CounterCoin.conf"));
     if (!pathConfigFile.is_complete()) pathConfigFile = GetDataDir(false) / pathConfigFile;
     return pathConfigFile;
 }
@@ -1089,7 +1089,7 @@ void ReadConfigFile(map<string, string>& mapSettingsRet,
 {
     boost::filesystem::ifstream streamConfig(GetConfigFile());
     if (!streamConfig.good())
-        return; // No Countercoin.conf file is OK
+        return; // No CounterCoin.conf file is OK
 
     // clear path cache after loading config file
     fCachedPath[0] = fCachedPath[1] = false;
@@ -1099,7 +1099,7 @@ void ReadConfigFile(map<string, string>& mapSettingsRet,
 
     for (boost::program_options::detail::config_file_iterator it(streamConfig, setOptions), end; it != end; ++it)
     {
-        // Don't overwrite existing settings so command line settings override Countercoin.conf
+        // Don't overwrite existing settings so command line settings override CounterCoin.conf
         string strKey = string("-") + it->string_key;
         if (mapSettingsRet.count(strKey) == 0)
         {
@@ -1113,7 +1113,7 @@ void ReadConfigFile(map<string, string>& mapSettingsRet,
 
 boost::filesystem::path GetPidFile()
 {
-    boost::filesystem::path pathPidFile(GetArg("-pid", "Countercoind.pid"));
+    boost::filesystem::path pathPidFile(GetArg("-pid", "CounterCoind.pid"));
     if (!pathPidFile.is_complete()) pathPidFile = GetDataDir() / pathPidFile;
     return pathPidFile;
 }
@@ -1337,7 +1337,7 @@ void AddTimeData(const CNetAddr& ip, int64 nTime)
                 if (!fMatch)
                 {
                     fDone = true;
-                    string strMessage = _("Warning: Please check that your computer's date and time are correct! If your clock is wrong Countercoin will not work properly.");
+                    string strMessage = _("Warning: Please check that your computer's date and time are correct! If your clock is wrong CounterCoin will not work properly.");
                     strMiscWarning = strMessage;
                     printf("*** %s\n", strMessage.c_str());
                     uiInterface.ThreadSafeMessageBox(strMessage, "", CClientUIInterface::MSG_WARNING);

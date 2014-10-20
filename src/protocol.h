@@ -31,7 +31,7 @@ class CMessageHeader
         std::string GetCommand() const;
         bool IsValid() const;
 
-        CSGOLEMENT_SERIALIZE
+        IMPLEMENT_SERIALIZE
             (
              READWRITE(FLATDATA(pchMessageStart));
              READWRITE(FLATDATA(pchCommand));
@@ -39,7 +39,7 @@ class CMessageHeader
              READWRITE(nChecksum);
             )
 
-    // TODO: make private (CSGOroves encapsulation)
+    // TODO: make private (improves encapsulation)
     public:
         enum {
             COMMAND_SIZE=12,
@@ -71,7 +71,7 @@ class CAddress : public CService
 
         void Init();
 
-        CSGOLEMENT_SERIALIZE
+        IMPLEMENT_SERIALIZE
             (
              CAddress* pthis = const_cast<CAddress*>(this);
              CService* pip = (CService*)pthis;
@@ -88,7 +88,7 @@ class CAddress : public CService
 
         void print() const;
 
-    // TODO: make private (CSGOroves encapsulation)
+    // TODO: make private (improves encapsulation)
     public:
         uint64 nServices;
 
@@ -107,7 +107,7 @@ class CInv
         CInv(int typeIn, const uint256& hashIn);
         CInv(const std::string& strType, const uint256& hashIn);
 
-        CSGOLEMENT_SERIALIZE
+        IMPLEMENT_SERIALIZE
         (
             READWRITE(type);
             READWRITE(hash);
@@ -120,7 +120,7 @@ class CInv
         std::string ToString() const;
         void print() const;
 
-    // TODO: make private (CSGOroves encapsulation)
+    // TODO: make private (improves encapsulation)
     public:
         int type;
         uint256 hash;

@@ -1,7 +1,7 @@
 /* $Id: aes_helper.c 220 2010-06-09 09:21:50Z tp $ */
 /*
  * AES tables. This file is not meant to be compiled by itself; it
- * is included by some hash function CSGOlementations. It contains
+ * is included by some hash function implementations. It contains
  * the precomputed tables and helper macros for evaluating an AES
  * round, optionally with a final XOR with a subkey.
  *
@@ -31,7 +31,7 @@
  * included in all copies or substantial portions of the Software.
  * 
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR CSGOLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
  * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
  * CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,

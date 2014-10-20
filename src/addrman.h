@@ -45,7 +45,7 @@ private:
 
 public:
 
-    CSGOLEMENT_SERIALIZE(
+    IMPLEMENT_SERIALIZE(
         CAddress* pthis = (CAddress*)(this);
         READWRITE(*pthis);
         READWRITE(source);
@@ -245,7 +245,7 @@ protected:
 
 public:
 
-    CSGOLEMENT_SERIALIZE
+    IMPLEMENT_SERIALIZE
     (({
         // serialized format:
         // * version byte (currently 0)

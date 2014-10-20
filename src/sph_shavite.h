@@ -1,6 +1,6 @@
 /* $Id: sph_shavite.h 208 2010-06-02 20:33:00Z tp $ */
 /**
- * SHAvite-3 interface. This code CSGOlements SHAvite-3 with the
+ * SHAvite-3 interface. This code implements SHAvite-3 with the
  * recommended parameters for SHA-3, with outputs of 224, 256, 384 and
  * 512 bits. In the following, we call the function "SHAvite" (without
  * the "-3" suffix), thus "SHAvite-224" is "SHAvite-3 with a 224-bit
@@ -22,7 +22,7 @@
  * included in all copies or substantial portions of the Software.
  * 
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR CSGOLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
  * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
  * CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
@@ -72,7 +72,7 @@ extern "C"{
  * context can be reused for another computation.
  *
  * The contents of this structure are private. A running SHAvite
- * computation can be cloned by copying the context (e.g. with a sCSGOle
+ * computation can be cloned by copying the context (e.g. with a simple
  * <code>memcpy()</code>).
  */
 typedef struct {
@@ -103,7 +103,7 @@ typedef sph_shavite_small_context sph_shavite256_context;
  * context can be reused for another computation.
  *
  * The contents of this structure are private. A running SHAvite
- * computation can be cloned by copying the context (e.g. with a sCSGOle
+ * computation can be cloned by copying the context (e.g. with a simple
  * <code>memcpy()</code>).
  */
 typedef struct {

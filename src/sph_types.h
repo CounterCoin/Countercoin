@@ -3,7 +3,7 @@
  * Basic type definitions.
  *
  * This header file defines the generic integer types that will be used
- * for the CSGOlementation of hash functions; it also contains helper
+ * for the implementation of hash functions; it also contains helper
  * functions which encode and decode multi-byte integer values, using
  * either little-endian or big-endian conventions.
  *
@@ -31,7 +31,7 @@
  * included in all copies or substantial portions of the Software.
  * 
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR CSGOLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
  * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
  * CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
@@ -65,10 +65,10 @@
  *
  * @section overview Overview
  *
- * <code>sphlib</code> is a library which contains CSGOlementations of
+ * <code>sphlib</code> is a library which contains implementations of
  * various cryptographic hash functions. These pages have been generated
  * with <a href="http://www.doxygen.org/index.html">doxygen</a> and
- * document the API for the C CSGOlementations.
+ * document the API for the C implementations.
  *
  * The API is described in appropriate header files, which are available
  * in the "Files" section. Each hash function family has its own header,
@@ -91,10 +91,10 @@
  * in the embedded world, feature eight-bit bytes, i.e. map bytes to
  * octets.
  *
- * Nevertheless, for some of the CSGOlemented hash functions, an extra
+ * Nevertheless, for some of the implemented hash functions, an extra
  * API has been added, which allows the input of arbitrary sequences of
  * bits: when the computation is about to be closed, 1 to 7 extra bits
- * can be added. The functions for which this API is CSGOlemented include
+ * can be added. The functions for which this API is implemented include
  * the SHA-2 functions and all SHA-3 candidates.
  *
  * <code>sphlib</code> defines hash function which may hash octet streams,
@@ -107,7 +107,7 @@
  * architectures where this property is not met.
  *
  * The hash function output is also converted into bytes. All currently
- * CSGOlemented hash functions have an output width which is a multiple of
+ * implemented hash functions have an output width which is a multiple of
  * eight, and this is likely to remain true for new designs.
  *
  * Most hash functions internally convert input data into 32-bit of 64-bit
@@ -116,15 +116,15 @@
  * bytes with a similar endianness convention. Some hash functions have
  * been only loosely specified on that subject; when necessary,
  * <code>sphlib</code> has been tested against published "reference"
- * CSGOlementations in order to use the same conventions.
+ * implementations in order to use the same conventions.
  *
  * @subsection shortname Function short name
  *
- * Each CSGOlemented hash function has a "short name" which is used
+ * Each implemented hash function has a "short name" which is used
  * internally to derive the identifiers for the functions and context
  * structures which the function uses. For instance, MD5 has the short
  * name <code>"md5"</code>. Short names are listed in the next section,
- * for the CSGOlemented hash functions. In subsequent sections, the
+ * for the implemented hash functions. In subsequent sections, the
  * short name will be assumed to be <code>"XXX"</code>: replace with the
  * actual hash function name to get the C identifier.
  *
@@ -135,13 +135,13 @@
  *
  * @subsection context Context structure
  *
- * Each CSGOlemented hash fonction has its own context structure, available
+ * Each implemented hash fonction has its own context structure, available
  * under the type name <code>"sph_XXX_context"</code> for the hash function
  * with short name <code>"XXX"</code>. This structure holds all needed
  * state for a running hash computation.
  *
  * The contents of these structures are meant to be opaque, and private
- * to the CSGOlementation. However, these contents are specified in the
+ * to the implementation. However, these contents are specified in the
  * header files so that application code which uses <code>sphlib</code>
  * may access the size of those structures.
  *
@@ -160,7 +160,7 @@
  * <code>sphlib</code> is thread-safe and reentrant: several hash
  * computations may be performed in parallel, provided that they do not
  * operate on the same context. Moreover, a running computation can be
- * cloned by copying the context (with a sCSGOle <code>memcpy()</code>):
+ * cloned by copying the context (with a simple <code>memcpy()</code>):
  * the context and its clone are then independant and may be updated
  * with new data and/or closed without interfering with each other.
  * Similarly, a context structure can be moved in memory at will:
@@ -215,16 +215,16 @@
  * be optimally read by full words. This depends on the type of access;
  * basically, some hash functions will read data by 32-bit or 64-bit
  * words. <code>sphlib</code> does not mandate such alignment for input
- * data, but using aligned data can substantially CSGOrove performance.
+ * data, but using aligned data can substantially improve performance.
  *
  * As a rule, it is best to input data by chunks whose length (in bytes)
  * is a multiple of eight, and which begins at "generally aligned"
  * addresses, such as the base address returned by a call to
  * <code>malloc()</code>.
  *
- * @section functions CSGOlemented functions
+ * @section functions Implemented functions
  *
- * We give here the list of CSGOlemented functions. They are grouped by
+ * We give here the list of implemented functions. They are grouped by
  * family; to each family corresponds a specific header file. Each
  * individual function has its associated "short name". Please refer to
  * the documentation for that header file to get details on the hash
@@ -278,8 +278,8 @@
  *   - WHIRLPOOL-1: short name: <code>whirlpool1</code> (64)
  *   - WHIRLPOOL: short name: <code>whirlpool</code> (64)
  *
- * The fourteen second-round SHA-3 candidates are also CSGOlemented;
- * when applicable, the CSGOlementations follow the "final" specifications
+ * The fourteen second-round SHA-3 candidates are also implemented;
+ * when applicable, the implementations follow the "final" specifications
  * as published for the third round of the SHA-3 competition (BLAKE,
  * Groestl, JH, Keccak and Skein have been tweaked for third round).
  *
@@ -368,13 +368,13 @@
  * for round 2, i.e. with the "tweaks" that some candidates added
  * between round 1 and round 2. Also, some of the submitted packages for
  * round 2 contained errors, in the specification, reference code, or
- * both. <code>sphlib</code> CSGOlements the corrected versions.
+ * both. <code>sphlib</code> implements the corrected versions.
  */
 
 /** @hideinitializer
  * Unsigned integer type whose length is at least 32 bits; on most
  * architectures, it will have a width of exactly 32 bits. Unsigned C
- * types CSGOlement arithmetics modulo a power of 2; use the
+ * types implement arithmetics modulo a power of 2; use the
  * <code>SPH_T32()</code> macro to ensure that the value is truncated
  * to exactly 32 bits. Unless otherwise specified, all macros and
  * functions which accept <code>sph_u32</code> values assume that these
@@ -518,7 +518,7 @@ typedef __arch_dependant__ sph_s64;
 
 /**
  * This macro is defined if the platform has been detected as using
- * little-endian convention. This CSGOlies that the <code>sph_u32</code>
+ * little-endian convention. This implies that the <code>sph_u32</code>
  * type (and the <code>sph_u64</code> type also, if it is defined) has
  * an exact width (i.e. exactly 32-bit, respectively 64-bit).
  */
@@ -526,7 +526,7 @@ typedef __arch_dependant__ sph_s64;
 
 /**
  * This macro is defined if the platform has been detected as using
- * big-endian convention. This CSGOlies that the <code>sph_u32</code>
+ * big-endian convention. This implies that the <code>sph_u32</code>
  * type (and the <code>sph_u64</code> type also, if it is defined) has
  * an exact width (i.e. exactly 32-bit, respectively 64-bit).
  */
@@ -819,7 +819,7 @@ static inline void sph_enc64be_aligned(void *dst, sph_u64 val);
 #if defined __STDC__ && __STDC_VERSION__ >= 199901L
 
 /*
- * On C99 CSGOlementations, we can use <stdint.h> to get an exact 64-bit
+ * On C99 implementations, we can use <stdint.h> to get an exact 64-bit
  * type, if any, or otherwise use a wider type (which must exist, for
  * C99 conformance).
  */
@@ -924,7 +924,7 @@ typedef long long sph_s64;
 #endif
 
 /*
- * CSGOlementation note: some processors have specific opcodes to perform
+ * Implementation note: some processors have specific opcodes to perform
  * a rotation. Recent versions of gcc recognize the expression above and
  * use the relevant opcodes, when appropriate.
  */
@@ -988,7 +988,7 @@ typedef long long sph_s64;
  * SPH_PPC64_GCC        PowerPC, 64-bit, with gcc
  *
  * TODO: enhance automatic detection, for more architectures and compilers.
- * Endianness is the most CSGOortant. SPH_UNALIGNED and SPH_UPTR help with
+ * Endianness is the most important. SPH_UNALIGNED and SPH_UPTR help with
  * some very fast functions (e.g. MD4) when using unaligned input data.
  * The CPU-specific-with-GCC macros are useful only for inline assembly,
  * normally restrained to this header file.
@@ -1025,7 +1025,7 @@ typedef long long sph_s64;
 #endif
 
 /*
- * 64-bit Sparc architecture (CSGOlies v9).
+ * 64-bit Sparc architecture (implies v9).
  */
 #elif ((defined __sparc__ || defined __sparc) && defined __arch64__) \
 	|| defined __sparcv9
@@ -1079,7 +1079,7 @@ typedef long long sph_s64;
 
 /*
  * Note: we do not declare cross-endian access to be "fast": even if
- * using inline assembly, CSGOlementation should still assume that
+ * using inline assembly, implementation should still assume that
  * keeping the decoded word in a temporary is faster than decoding
  * it again.
  */
@@ -1230,7 +1230,7 @@ sph_bswap64(sph_u64 x)
 /*
  * Disabled code. Apparently, Microsoft Visual C 2005 is smart enough
  * to generate proper opcodes for endianness swapping with the pure C
- * CSGOlementation below.
+ * implementation below.
  *
 
 #elif SPH_I386_MSVC && !SPH_NO_ASM

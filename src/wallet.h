@@ -55,7 +55,7 @@ public:
         vchPubKey = vchPubKeyIn;
     }
 
-    CSGOLEMENT_SERIALIZE
+    IMPLEMENT_SERIALIZE
     (
         if (!(nType & SER_GETHASH))
             READWRITE(nVersion);
@@ -136,7 +136,7 @@ public:
     void UnlockAllCoins();
     void ListLockedCoins(std::vector<COutPoint>& vOutpts);
 
-    // keystore CSGOlementation
+    // keystore implementation
     // Generate a new key
     CPubKey GenerateNewKey();
     // Adds a key to the store, and saves it to disk.
@@ -304,7 +304,7 @@ public:
     // signify that a particular wallet feature is now used. this may change nWalletVersion and nWalletMaxVersion if those are lower
     bool SetMinVersion(enum WalletFeature, CWalletDB* pwalletdbIn = NULL, bool fExplicit = false);
 
-    // change which version we're allowed to upgrade to (note that this does not immediately CSGOly upgrading to that format)
+    // change which version we're allowed to upgrade to (note that this does not immediately imply upgrading to that format)
     bool SetMaxVersion(int nVersion);
 
     // get the current wallet format (the oldest client version guaranteed to understand this wallet)
@@ -445,7 +445,7 @@ public:
         nOrderPos = -1;
     }
 
-    CSGOLEMENT_SERIALIZE
+    IMPLEMENT_SERIALIZE
     (
         CWalletTx* pthis = const_cast<CWalletTx*>(this);
         if (fRead)
@@ -743,7 +743,7 @@ public:
         nTimeExpires = nExpires;
     }
 
-    CSGOLEMENT_SERIALIZE
+    IMPLEMENT_SERIALIZE
     (
         if (!(nType & SER_GETHASH))
             READWRITE(nVersion);
@@ -777,7 +777,7 @@ public:
         vchPubKey = CPubKey();
     }
 
-    CSGOLEMENT_SERIALIZE
+    IMPLEMENT_SERIALIZE
     (
         if (!(nType & SER_GETHASH))
             READWRITE(nVersion);
@@ -817,7 +817,7 @@ public:
         nOrderPos = -1;
     }
 
-    CSGOLEMENT_SERIALIZE
+    IMPLEMENT_SERIALIZE
     (
         CAccountingEntry& me = *const_cast<CAccountingEntry*>(this);
         if (!(nType & SER_GETHASH))

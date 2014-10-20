@@ -84,13 +84,13 @@ public:
         Set(vch.begin(), vch.end());
     }
 
-    // SCSGOle read-only vector-like interface to the pubkey data.
+    // Simple read-only vector-like interface to the pubkey data.
     unsigned int size() const { return GetLen(vch[0]); }
     const unsigned char *begin() const { return vch; }
     const unsigned char *end() const { return vch+size(); }
     const unsigned char &operator[](unsigned int pos) const { return vch[pos]; }
 
-    // Comparator CSGOlementation.
+    // Comparator implementation.
     friend bool operator==(const CPubKey &a, const CPubKey &b) {
         return a.vch[0] == b.vch[0] &&
                memcmp(a.vch, b.vch, a.size()) == 0;
@@ -103,7 +103,7 @@ public:
                (a.vch[0] == b.vch[0] && memcmp(a.vch, b.vch, a.size()) < 0);
     }
 
-    // CSGOlement serialization, as if this was a byte vector.
+    // Implement serialization, as if this was a byte vector.
     unsigned int GetSerializeSize(int nType, int nVersion) const {
         return size() + 1;
     }
@@ -217,7 +217,7 @@ public:
         }
     }
 
-    // SCSGOle read-only vector-like interface.
+    // Simple read-only vector-like interface.
     unsigned int size() const { return (fValid ? 32 : 0); }
     const unsigned char *begin() const { return vch; }
     const unsigned char *end() const { return vch + size(); }

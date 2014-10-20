@@ -80,7 +80,7 @@ class CNetAddr
         friend bool operator!=(const CNetAddr& a, const CNetAddr& b);
         friend bool operator<(const CNetAddr& a, const CNetAddr& b);
 
-        CSGOLEMENT_SERIALIZE
+        IMPLEMENT_SERIALIZE
             (
              READWRITE(FLATDATA(ip));
             )
@@ -120,7 +120,7 @@ class CService : public CNetAddr
         CService(const struct sockaddr_in6& addr);
 #endif
 
-        CSGOLEMENT_SERIALIZE
+        IMPLEMENT_SERIALIZE
             (
              CService* pthis = const_cast<CService*>(this);
              READWRITE(FLATDATA(ip));

@@ -109,7 +109,7 @@ OBJS= \
     obj/cubehash.o \
     obj/shavite.o
 
-all: Countercoind.exe
+all: CounterCoind.exe
 
 DEFS += -I"$(CURDIR)/leveldb/include"
 DEFS += -I"$(CURDIR)/leveldb/helpers"
@@ -127,7 +127,7 @@ obj/%.o: %.cpp $(HEADERS)
 obj/%.o: %.c $(HEADERS)
 	$(CXX) -c $(xCXXFLAGS) -fpermissive -o $@ $<
 
-Countercoind.exe: $(OBJS:obj/%=obj/%)
+CounterCoind.exe: $(OBJS:obj/%=obj/%)
 	$(CXX) $(xCXXFLAGS) $(xLDFLAGS) -o $@ $(LIBPATHS) $^ $(LIBS)
 
 TESTOBJS := $(patsubst test/%.cpp,obj-test/%.o,$(wildcard test/*.cpp))
@@ -135,15 +135,15 @@ TESTOBJS := $(patsubst test/%.cpp,obj-test/%.o,$(wildcard test/*.cpp))
 obj-test/%.o: test/%.cpp $(HEADERS)
 	$(CXX) -c $(TESTDEFS) $(xCXXFLAGS) -o $@ $<
 
-test_Countercoin.exe: $(TESTOBJS) $(filter-out obj/init.o obj/Countercoind.o,$(OBJS:obj/%=obj/%))
+test_CounterCoin.exe: $(TESTOBJS) $(filter-out obj/init.o obj/CounterCoind.o,$(OBJS:obj/%=obj/%))
 	$(CXX) $(xCXXFLAGS) $(xLDFLAGS) -o $@ $(LIBPATHS) $^ -lboost_unit_test_framework-mt-s $(LIBS)
 
 
 clean:
 	-rm -f obj/*.o
-	-rm -f Countercoind.exe
+	-rm -f CounterCoind.exe
 	-rm -f obj-test/*.o
-	-rm -f test_Countercoin.exe
+	-rm -f test_CounterCoin.exe
 	-rm -f obj/build.h
 	cd leveldb && TARGET_OS=OS_WINDOWS_CROSSCOMPILE $(MAKE) clean && cd ..
 
