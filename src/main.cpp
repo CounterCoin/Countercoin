@@ -1269,8 +1269,8 @@ const CBlockIndex* GetLastBlockIndexForAlgo(const CBlockIndex* pindex, int algo)
     }
 }
 
-static const int64 nStartSubsidy = 1024 * COIN;
-static const int64 nMinSubsidy = 16 * COIN;
+static const int64 nStartSubsidy = 16 * COIN;
+static const int64 nMinSubsidy = 1 * COIN;
 
 int64 static GetBlockValue(int nHeight, int64 nFees)
 {
@@ -1290,12 +1290,12 @@ int64 static GetBlockValue(int nHeight, int64 nFees)
     return nSubsidy + nFees;
 }
 
-static const int64 nTargetTimespan = 60; // 1 minute
+static const int64 nTargetTimespan = 300; // 5 minutes
 static const int64 nTargetSpacing = 30; // 30 seconds
-static const int64 nInterval = nTargetTimespan / nTargetSpacing; // 2 blocks
+static const int64 nInterval = nTargetTimespan / nTargetSpacing; // 10 blocks
 
-static const int64 nAveragingInterval = nInterval * 20; // 40 blocks
-static const int64 nAveragingTargetTimespan = nAveragingInterval * nTargetSpacing; // 40 minutes
+static const int64 nAveragingInterval = nInterval * 20; // 200 blocks
+static const int64 nAveragingTargetTimespan = nAveragingInterval * nTargetSpacing; //  6000 minutes
 
 static const int64 nMaxAdjustDown = 20; // 20% adjustment down
 static const int64 nMaxAdjustUp = 10; // 10% adjustment up
